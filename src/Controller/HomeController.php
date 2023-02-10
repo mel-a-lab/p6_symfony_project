@@ -12,15 +12,22 @@ class HomeController extends AbstractController
     #[Route('/', 'home.index', methods: ['GET'])]
     public function index() : Response
     {
-        return $this->render('home.html.twig');
+        $tricks = ['figure1','figure2','figure3','figure4','figure5'];
+        return $this->render('home.html.twig',[
+            'tricks'=>$tricks
+        ]);
     }
 
-    private function tricksManagement(): void
+    #[Route('/signin', 'signin', methods: ['GET'])]
+    public function signin() : Response
     {
-        $this->postManager = new PostManager();
-        $posts = $this->postManager->getPosts();
-        $this->view = new View('PostManagement');
-        $this->view->generate(array('posts' => $posts));
+        return $this->render('signin.html.twig');
+    }
+
+    #[Route('/signup', 'signup', methods: ['GET'])]
+    public function signup() : Response
+    {
+        return $this->render('signup.html.twig');
     }
 
 }
