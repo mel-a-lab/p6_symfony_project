@@ -3,16 +3,18 @@
 // src/Controller/HelloController.php
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\TrickRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
     #[Route('/', 'home.index', methods: ['GET'])]
-    public function index() : Response
+    public function index(TrickRepository $trickRepository) : Response
     {
-        $tricks = ['figure1','figure2','figure3','figure4','figure5'];
+        //$tricks = ['figure1','figure2','figure3','figure4','figure5'];
+        $tricks = $trickRepository->findAll();
         return $this->render('home.html.twig',[
             'tricks'=>$tricks
         ]);
