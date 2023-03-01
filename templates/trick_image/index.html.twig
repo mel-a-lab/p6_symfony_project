@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TrickImage index{% endblock %}
+
+{% block body %}
+    <h1>TrickImage index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>ImagePath</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for trick_image in trick_images %}
+            <tr>
+                <td>{{ trick_image.id }}</td>
+                <td>{{ trick_image.imagePath }}</td>
+                <td>
+                    <a href="{{ path('app_trick_image_show', {'id': trick_image.id}) }}">show</a>
+                    <a href="{{ path('app_trick_image_edit', {'id': trick_image.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_trick_image_new') }}">Create new</a>
+{% endblock %}

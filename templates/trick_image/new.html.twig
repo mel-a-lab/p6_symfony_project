@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New TrickImage{% endblock %}
+
+{% block body %}
+    <h1>Create new TrickImage</h1>
+
+    {{ include('trick_image/_form.html.twig') }}
+
+    <a href="{{ path('app_trick_image_index') }}">back to list</a>
+{% endblock %}
