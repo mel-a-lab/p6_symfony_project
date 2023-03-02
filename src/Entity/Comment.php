@@ -20,15 +20,14 @@ class Comment
     #[ORM\Column(length: 255)]
     private ?string $content = null;
 
-    #[ORM\ManytoOne(inversedBy: 'comments', targetEntity: Trick::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Trick $trick = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCreated = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateUpdated = null;
+
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    private ?Trick $proper_trick = null;
 
     public function getId(): ?int
     {
@@ -79,6 +78,18 @@ class Comment
     public function setDateUpdated(\DateTimeInterface $dateUpdated): self
     {
         $this->dateUpdated = $dateUpdated;
+
+        return $this;
+    }
+
+    public function getProperTrick(): ?Trick
+    {
+        return $this->proper_trick;
+    }
+
+    public function setProperTrick(?Trick $proper_trick): self
+    {
+        $this->proper_trick = $proper_trick;
 
         return $this;
     }

@@ -27,19 +27,23 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: TrickImage::class)]
     private Collection $tricksImages;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
-    private Collection $comments;
-
     #[ORM\ManyToOne(targetEntity: Group::class)]
     private Collection $group;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = 'test';
 
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
+
+    #[ORM\OneToMany(mappedBy: 'proper_trick', targetEntity: Comment::class)]
+    private Collection $comments;
+
 
     public function __construct()
     {
         $this->tricksImages = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -111,5 +115,46 @@ class Trick
         return $this;
     }
 
-    // getter et setter comment comme tricksimages
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setProperTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getProperTrick() === $this) {
+                $comment->setProperTrick(null);
+            }
+        }
+
+        return $this;
+    }
 }
