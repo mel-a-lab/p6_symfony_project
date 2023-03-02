@@ -12,7 +12,8 @@ class TrickType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name') // mettre type chaine de caractères
+            // ajouter les propriétés simple (description avec contrainte et le groupe, ajouter contraintes dans formulaire, faire afficher erreur sur front, on peut typer juste après le champ , c'est le cas pour le groupe)
         ;
     }
 

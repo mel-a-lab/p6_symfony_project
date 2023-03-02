@@ -20,7 +20,8 @@ class Comment
     #[ORM\Column(length: 255)]
     private ?string $content = null;
 
-    #[ORM\ManytoOne(inversedBy: 'comments')]
+    #[ORM\ManytoOne(inversedBy: 'comments', targetEntity: Trick::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Trick $trick = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

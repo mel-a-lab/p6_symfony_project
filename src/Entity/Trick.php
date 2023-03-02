@@ -30,6 +30,9 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
     private Collection $comments;
 
+    #[ORM\ManyToOne(targetEntity: Group::class)]
+    private Collection $group;
+
     #[ORM\Column(length: 255)]
     private ?string $slug = 'test';
 
@@ -43,6 +46,7 @@ class Trick
     #[ORM\PreUpdate]
     public function updateSlug(): void
     {
+        //récupérer name, remplacer les espaces par tirets, regarder les fonctions php
         $slugify = new Slugify();
         $this->slug = $slugify->slugify($this->name);
     }
@@ -106,4 +110,6 @@ class Trick
 
         return $this;
     }
+
+    // getter et setter comment comme tricksimages
 }
