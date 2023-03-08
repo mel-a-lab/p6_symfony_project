@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
@@ -50,9 +51,8 @@ class Trick
     #[ORM\PreUpdate]
     public function updateSlug(): void
     {
-        //récupérer name, remplacer les espaces par tirets, regarder les fonctions php
-        $slugify = new Slugify();
-        $this->slug = $slugify->slugify($this->name);
+        $slugger = new AsciiSlugger();
+        $this->slug = $slugger->slug($this->name);
     }
 
     public function getId(): ?int
