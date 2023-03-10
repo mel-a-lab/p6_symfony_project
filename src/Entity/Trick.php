@@ -28,7 +28,7 @@ class Trick
     private Collection $tricksImages;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
-    private Collection $group;
+    private Group $group;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = 'test';
@@ -124,6 +124,18 @@ class Trick
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getGroup(): ?Group
+    {
+        return $this->group;
+    }
+
+    public function setGroup(Group $group): self
+    {
+        $this->group = $group;
 
         return $this;
     }
