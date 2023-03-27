@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
-#[UniqueEntity('name')]
+#[UniqueEntity('name', message: 'Ce nom est déjà utilisé')]
 #[ORM\HasLifecycleCallbacks]
 class Trick
 {
