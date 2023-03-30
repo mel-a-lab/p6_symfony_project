@@ -2,20 +2,44 @@
 
 namespace App\Form;
 
+use App\Entity\Group;
 use App\Entity\Trick;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class TrickType extends AbstractType
 {
+    
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name') // mettre type chaine de caractères
-            // ajouter les propriétés simple (description avec contrainte et le groupe, ajouter contraintes dans formulaire, faire afficher erreur sur front, on peut typer juste après le champ , c'est le cas pour le groupe)
+            ->add('group', EntityType::class, [
+                'class' => Group::class,
+                'choice_label' => 'name', 
+                'constraints' => [
+                    new NotNull([
+                        'message' => 'Le groupe ne doit pas être vide.'
+                    ])
+                ]
+            ])
+            ->add('name', TextType::class, [
+                'label' => 'Nom de la figure',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le champ "Nom" ne doit pas être vide.'
+                    ])
+                ]
+
+            ]) 
+
             ->add('description', TextareaType::class, [
                 'label' => 'Contenu de l\'article',
                 'constraints' => [
@@ -23,9 +47,33 @@ class TrickType extends AbstractType
                         'message' => 'Le champ "Description" ne doit pas être vide.'
                     ])
                 ]
+            ])
+
+            ->add('images', FileType::class, [
+                'label' => 'Images',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+
+                // unmapped fields can't define their validation using annotations
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/*',
+                        ],
+                        'mimeTypesMessage' => 'Merci de télécharger une image',
+                    ])
+                ],
             ]);
         ;
     }
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {

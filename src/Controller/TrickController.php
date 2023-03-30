@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Trick;
 use App\Form\TrickType;
+use App\Entity\TrickImage;
 use App\Repository\TrickRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\TrickImageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/trick')]
 class TrickController extends AbstractController
@@ -22,14 +24,33 @@ class TrickController extends AbstractController
     }
 
     #[Route('/new', name: 'app_trick_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, TrickRepository $trickRepository): Response
+    public function new(Request $request, TrickRepository $trickRepository, TrickImageRepository $trickImageRepository): Response
     {
         $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $images = $form->get('images')->getData();
+            if ($images) {
+                $originalFilename = pathinfo($images->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$images->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $images->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+            }
+            $images = new TrickImage();
+            $images->setImagePath($newFilename);
+            $images->setTrick($trick);
             $trickRepository->save($trick, true);
+            $trickImageRepository->save($images, true);
 
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
