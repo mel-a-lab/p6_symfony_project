@@ -32,13 +32,15 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $images = $form->get('images')->getData();
-            if ($images) {
-                $originalFilename = pathinfo($images->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename.'-'.uniqid().'.'.$images->guessExtension();
+            foreach ($images as $image) {
+
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$image->guessExtension();
 
                 // Move the file to the directory where brochures are stored
                 try {
-                    $images->move(
+                    $image->move(
                         $this->getParameter('images_directory'),
                         $newFilename
                     );
@@ -46,12 +48,13 @@ class TrickController extends AbstractController
                     // ... handle exception if something happens during file upload
                 }
             }
-            $images = new TrickImage();
-            $images->setImagePath($newFilename);
-            $images->setTrick($trick);
+            $image = new TrickImage();
+            $image->setImagePath($newFilename);
+            $image->setTrick($trick);
             $trickRepository->save($trick, true);
-            $trickImageRepository->save($images, true);
-
+            $trickImageRepository->save($image, true);
+        }
+            
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -61,7 +64,7 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_trick_show', methods: ['GET'])]
+    #[Route('/{slug}', name: 'app_trick_show', methods: ['GET'])]
     public function show(Trick $trick): Response
     {
         return $this->render('trick/show.html.twig', [
@@ -69,7 +72,7 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_trick_edit', methods: ['GET', 'POST'])]
+    #[Route('/{slug}/edit', name: 'app_trick_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trick $trick, TrickRepository $trickRepository): Response
     {
         $form = $this->createForm(TrickType::class, $trick);

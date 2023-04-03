@@ -6,6 +6,7 @@ use App\Entity\Group;
 use App\Entity\Trick;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -62,17 +63,24 @@ class TrickType extends AbstractType
                 // unmapped fields can't define their validation using annotations
                 // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
-                    new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'image/*',
-                        ],
-                        'mimeTypesMessage' => 'Merci de télécharger une image',
+                    new All([
+                        'constraints' => [
+                            new File([
+                                'maxSize' => '1024k',
+                                'mimeTypes' => [
+                                    'image/*'
+                                ],
+                                'mimeTypesMessage' => 'Merci de télécharger une image valide.',
+                            ])
+                        ]
                     ])
-                ],
+            ],
+                'multiple' => true, // Allow multiple images
+                'attr' => ['accept' => 'image/*'], // Allow only image files to be selected
             ]);
-        ;
     }
+
+
 
 
     public function configureOptions(OptionsResolver $resolver): void
