@@ -4,22 +4,25 @@
 {% endblock %}
 
 {% block body %}
-<div style="position: relative;">
-    <img src="{{ asset('homepage_image/pexels-evgenia-kirpichnikova-1973293.jpg') }}" alt="image d'accueil" class="img-fluid w-100">
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-        <h1 class="text-center text-white">Figure de snowboard</h1>
-    </div>
-</div>
-
-<div class="row">
-	{% for trick in tricks %}
-		<div class="card my-3" style="width: 18rem;">
-			<img src="..." class="card-img-top" alt="...">
-			<div class="card-body">
-				<h5 class="card-title">{{ trick.name }}</h5>
-				<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-				<a href="#" class="btn btn-primary">Go somewhere</a>
-			</div>
+	<div style="position: relative;">
+		<img src="{{ asset('homepage_image/pexels-evgenia-kirpichnikova-1973293.jpg') }}" alt="image d'accueil" class="img-fluid w-100">
+		<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+			<h1 class="text-center text-white">Figure de snowboard</h1>
 		</div>
-	{% endfor %}
-{% endblock %}
+	</div>
+
+	<div class="row">
+		{% for trick in tricks %}
+			<div class="card my-3" style="width: 18rem;">
+				{% if trick.tricksImages is not empty %}
+					<img src="{{ asset('uploads/trick_images/' ~ trick.tricksImages.first().getImageName()) }}" class="card-img-top" alt="{{ trick.name }}">
+				{% endif %}
+				<div class="card-body">
+					<h5 class="card-title">{{ trick.name }}</h5>
+					<p class="card-text">{{ trick.description }}</p>
+					<a href="{{ path('app_trick_show', {'slug': trick.slug}) }}" class="btn btn-primary">Voir</a>
+					<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}" class="btn btn-primary">Éditer</a>
+				</div>
+			</div>
+		{% endfor %}
+	{% endblock %}
