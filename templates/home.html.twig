@@ -15,7 +15,7 @@
 		{% for trick in tricks %}
 			<div class="card my-3" style="width: 18rem;">
 				{% if trick.tricksImages is not empty %}
-					<img src="{{ asset('uploads/trick_images/' ~ trick.tricksImages.first().getImageName()) }}" class="card-img-top" alt="{{ trick.name }}">
+					<img src="{{ asset('uploads/images/' ~ trick.tricksImages.first().getImagePath()) }}" class="card-img-top" alt="{{ trick.name }}">
 				{% endif %}
 				<div class="card-body">
 					<h5 class="card-title">{{ trick.name }}</h5>

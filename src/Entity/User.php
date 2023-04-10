@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\Column(type : 'uuid', unique: true)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -34,6 +34,9 @@ class User
 
     #[ORM\Column(type: Types::BLOB)]
     private $picture = null;
+
+    #[ORM\Column(length: 4096)]
+    private ?string $plainPassword = null;
 
     public function getId(): ?int
     {

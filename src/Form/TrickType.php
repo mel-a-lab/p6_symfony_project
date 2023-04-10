@@ -12,9 +12,11 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TrickType extends AbstractType
 {
@@ -52,16 +54,8 @@ class TrickType extends AbstractType
 
             ->add('images', FileType::class, [
                 'label' => 'Images',
-
-                // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
                 'required' => false,
-
-                // unmapped fields can't define their validation using annotations
-                // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new All([
                         'constraints' => [
@@ -77,6 +71,38 @@ class TrickType extends AbstractType
             ],
                 'multiple' => true, // Allow multiple images
                 'attr' => ['accept' => 'image/*'], // Allow only image files to be selected
+            ])
+
+            ->add('videos', CollectionType::class, [
+                'entry_type' => UrlType::class,
+                'label' => 'Vidéos',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'required' => false,
+                'attr' => [
+                    'class' => 'videos-collection',
+                ],
+                'entry_options' => [
+                    'attr' => [
+                        'class' => 'video-input',
+                        'placeholder' => 'Ajouter une URL de vidéo',
+                    ],
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Le champ "Vidéos" ne doit pas être vide.',
+                        ]),
+                        new Url([
+                            'message' => 'Veuillez saisir une URL valide pour la vidéo.',
+                        ]),
+                    ],
+                ],
+                'constraints' => [
+                    new Count([
+                        'max' => 10,
+                        'maxMessage' => 'Vous ne pouvez pas ajouter plus de {{ limit }} vidéos.',
+                    ]),
+                ],
             ]);
     }
 

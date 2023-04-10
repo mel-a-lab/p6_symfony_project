@@ -39,6 +39,9 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'proper_trick', targetEntity: Comment::class)]
     private Collection $comments;
 
+    //#[ORM\OneToMany(mappedBy: 'trick', targetEntity: TrickVideo::class)]
+    //private Collection $trickVideos;
+
 
     public function __construct()
     {
