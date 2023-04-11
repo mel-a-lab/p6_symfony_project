@@ -3,14 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
+use App\Entity\Comment;
 use App\Form\TrickType;
 use App\Entity\TrickImage;
+use App\Form\CommentFormType;
 use App\Repository\TrickRepository;
+use App\Repository\CommentRepository;
 use App\Repository\TrickImageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/trick')]
 class TrickController extends AbstractController
@@ -65,10 +69,25 @@ class TrickController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'app_trick_show', methods: ['GET'])]
-    public function show(Trick $trick): Response
+    public function show(Request $request,Trick $trick, CommentRepository $commentRepository): Response
     {
+        //comment part
+        // create comment
+        $comment = new Comment;
+
+        //generate form
+        $commentForm = $this->createform(CommentFormType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        //get comments
+        $comments = $commentRepository->findBy(['proper_trick' => $trick]);
+
+        //form processing
+
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
+            'comments' => $comments,
+            'commentform' => $commentForm->createView()
         ]);
     }
 

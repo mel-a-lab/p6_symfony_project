@@ -6,12 +6,15 @@ use App\Repository\TrickImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TrickImageRepository::class)]
+
+
 class TrickImage
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+    private $imageName;
 
     #[ORM\Column(length: 255)]
     private ?string $imagePath = null;
@@ -48,4 +51,9 @@ class TrickImage
 
         return $this;
     }
+
+    public function getImageName(): ?string
+{
+    return $this->imageName;
+}
 }

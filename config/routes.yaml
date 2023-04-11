@@ -2,7 +2,6 @@ controllers:
     resource: ../src/Controller/
     type: attribute
 
-    
 # config/routes.yaml
 
 # the "app_lucky_number" route name is not important yet
@@ -13,3 +12,31 @@ app_lucky_number:
 app_home_index:
     path: /home/index
     controller: App\Controller\HomeController::index
+
+# Route pour afficher le formulaire d'inscription
+register:
+    path: /register
+    controller: App\Controller\UserController::register
+    methods: ['GET']
+
+# Route pour traiter les données du formulaire d'inscription
+handle_register:
+    path: /register
+    controller: App\Controller\UserController::handleRegister
+    methods: ['POST']
+
+# Route pour afficher le formulaire de connexion
+login:
+    path: /login
+    controller: App\Controller\UserController::login
+    methods: ['GET']
+
+# Route pour traiter les données du formulaire de connexion
+handle_login:
+    path: /login
+    controller: App\Controller\UserController::handleLogin
+    methods: ['POST']    
+
+reset_password_request:
+    path: /reset-password
+    controller: App\Controller\ResetPasswordController::request
