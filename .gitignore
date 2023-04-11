@@ -20,3 +20,6 @@
 ###< symfony/phpunit-bridge ###
 
 .DS_Store
+
+/public/uploads
+
