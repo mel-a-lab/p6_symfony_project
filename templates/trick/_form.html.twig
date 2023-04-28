@@ -1,4 +1,14 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+
+  <div class="row mb-4 px-5">
+        <div class="col-12 col-md-10 mx-auto">
+            {{ form_label(form.trickVideos) }} <button type="button" class="add_item_link" data-collection-holder-class="videos">Add media</button>
+            <ul class="videos" data-index="{{ form.trickVideos|length }}" data-prototype="{{ form_widget(form.trickVideos.vars.prototype)|e('html_attr') }}"></ul>
+
+            {{ form_help(form.trickVideos) }}
+
+            {% do form.trickVideos.setRendered %}
+        </div>
+    </div>
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

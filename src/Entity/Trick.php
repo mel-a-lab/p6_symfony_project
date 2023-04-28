@@ -24,7 +24,7 @@ class Trick
     #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: TrickImage::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: TrickImage::class, cascade: ['persist'])]
     private Collection $tricksImages;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
@@ -39,13 +39,14 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'proper_trick', targetEntity: Comment::class)]
     private Collection $comments;
 
-    //#[ORM\OneToMany(mappedBy: 'trick', targetEntity: TrickVideo::class)]
-    //private Collection $trickVideos;
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: TrickVideo::class, cascade: ['persist'])]
+    private Collection $trickVideos;
 
 
     public function __construct()
     {
         $this->tricksImages = new ArrayCollection();
+        $this->trickVideos = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
 
@@ -105,6 +106,35 @@ class Trick
 
         return $this;
     }
+
+
+    public function getTrickVideos(): Collection
+    {
+        return $this->trickVideos;
+    }
+
+    public function addTrickVideo(TrickVideo $trickVideo): self
+{
+    if (!$this->trickVideos->contains($trickVideo)) {
+        $this->trickVideos->add($trickVideo);
+        $trickVideo->setTrick($this);
+    }
+
+    return $this;
+}
+
+public function removeTrickVideo(TrickVideo $trickVideo): self
+{
+    if ($this->trickVideos->removeElement($trickVideo)) {
+        // set the owning side to null (unless already changed)
+        if ($trickVideo->getTrick() === $this) {
+            $trickVideo->setTrick(null);
+        }
+    }
+
+    return $this;
+}
+
 
     public function getSlug(): ?string
     {

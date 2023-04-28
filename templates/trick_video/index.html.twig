@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TrickVideo index{% endblock %}
+
+{% block body %}
+    <h1>TrickVideo index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Url</th>
+                <th>trick</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for trick_video in trick_videos %}
+            <tr>
+                <td>{{ trick_video.id }}</td>
+                <td>{{ trick_video.url }}</td>
+                <td>{{ trick_video.trick.name }}</td>
+                <td>
+                    <a href="{{ path('app_trick_video_show', {'id': trick_video.id}) }}">show</a>
+                    <a href="{{ path('app_trick_video_edit', {'id': trick_video.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_trick_video_new') }}">Create new</a>
+{% endblock %}
