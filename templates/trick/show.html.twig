@@ -22,22 +22,39 @@
 						<img src="{{ asset('uploads/images/' ~ image.getImagePath()) }}" class="card-img-top" alt="{{ trick.name }}">
 					</div>
 				{% endfor %}
+				{% for video in trick.trickVideos %}
+					<div class="card my-3" style="width: 18rem;">
+						<iframe src="{{ video.url }}" class="card-img-top"></iframe>
+					</div>
+				{% endfor %}
 			</div>
 
+			<tr>
+				<td class="container-fluid bg-2 text-center">{{ trick.description }}</td>
+			</tr>
 
 			<tr>
-				<th>Id</th>
-				<td>{{ trick.id }}</td>
-			</tr>
-			<tr>
-				<th>Name</th>
 				<td>{{ trick.name }}</td>
 			</tr>
-			<tr>
-				<th>Description</th>
-				<td>{{ trick.description }}</td>
-			</tr>
 
+			{% if app.user %}
+				<h3>Ajouter un commentaire:</h3>
+				{{ form_start(commentForm) }}
+				{{ form_widget(commentForm) }}
+				{{ form_end(commentForm) }}
+			{% else %}
+				<p>Vous devez être connecté pour ajouter un commentaire.</p>
+			{% endif %}
+
+			{% for comment in comments %}
+				<div class="comment">
+					<p>{{ comment.content }}</p>
+					<small>by
+						{{ comment.user.email }}
+						on
+						{{ comment.dateCreated|date('d/m/Y H:i') }}</small>
+				</div>
+			{% endfor %}
 		</tbody>
 	</table>
 
@@ -56,5 +73,4 @@
 				{{ comment.dateCreated|date('d/m/Y H:i') }}</small>
 		</div>
 	{% endfor %}
-
-</tbody>{% endblock %}
+{% endblock %}
