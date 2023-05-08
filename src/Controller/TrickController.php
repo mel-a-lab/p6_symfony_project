@@ -61,7 +61,7 @@ class TrickController extends AbstractController
             }
             $trickRepository->save($trick, true);
 
-
+            $this->addFlash('success_trick_creation', 'Création de la figure réussi');
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -105,12 +105,35 @@ class TrickController extends AbstractController
     }
 
     #[Route('/{slug}/edit', name: 'app_trick_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Trick $trick, TrickRepository $trickRepository): Response
+    public function edit(Request $request, Trick $trick, TrickRepository $trickRepository, TrickImageRepository $trickImageRepository): Response
     {
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $images = $form->get('images')->getData();
+            foreach ($images as $image) {
+
+                if ($image) {
+                    $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                    $newFilename = $originalFilename . '-' . uniqid() . '.' . $image->guessExtension();
+
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $image->move(
+                            $this->getParameter('images_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+                }
+                $image = new TrickImage();
+                $image->setImagePath($newFilename);
+                $image->setTrick($trick);
+                $trickImageRepository->save($image, true);
+
+            }
             $trickRepository->save($trick, true);
 
             return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);
@@ -122,11 +145,13 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_trick_delete', methods: ['POST'])]
-    public function delete(Request $request, Trick $trick, TrickRepository $trickRepository): Response
+    #[Route('/{slug}', name: 'app_trick_delete', methods: ['DELETE'])]
+    public function delete(Trick $trick, Request $request, TrickRepository $trickRepository): Response
     {
+        dump($trick);die;
         if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {
             $trickRepository->remove($trick, true);
+            $this->addFlash('success', 'Le trick a été supprimé avec succès.');
         }
 
         return $this->redirectToRoute('app_trick_index', [], Response::HTTP_SEE_OTHER);

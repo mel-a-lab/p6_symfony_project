@@ -21,8 +21,16 @@
 					<h5 class="card-title">{{ trick.name }}</h5>
 					<p class="card-text">{{ trick.description }}</p>
 					<a href="{{ path('app_trick_show', {'slug': trick.slug}) }}" class="btn btn-primary">Voir</a>
-					<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}" class="btn btn-primary">Éditer</a>
+					{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+						<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}" class="btn btn-primary">Éditer</a>
+						
+					{% endif %}
 				</div>
+
+				<form action="{{ path('app_trick_delete', {'slug': trick.slug}) }}" method="delete" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce trick?');">
+						{# {{ csrf_token('delete' ~ trick.id) }} #}	
+							<input type="submit" value="Supprimer" class="btn btn-danger">
+						</form>
 			</div>
 		{% endfor %}
 {% endblock %}
