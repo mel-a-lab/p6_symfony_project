@@ -1,4 +1,7 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+	<link href="{{ asset('css/tricks.css') }}" rel="stylesheet"/>
+{% endblock %}
 
 {% block title %}Trick
 {% endblock %}
@@ -8,35 +11,66 @@
 
 	<table class="table">
 		<tbody>
-			<div style="position: relative;">
+			<div>
 				<img src="{{ asset('uploads/images/' ~ trick.tricksImages.first().getImagePath()) }}" class="card-img-top" alt="{{ trick.name }}">
-				<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-					<tr>
-						<th>Id</th>
-						<td>{{ trick.id }}</td>
-					</tr>
-					<tr>
-						<th>Name</th>
-						<td>{{ trick.name }}</td>
-					</tr>
-				</tbody>
-			</table>
+			</div>
 
-			<a href="{{ path('app_trick_index') }}">back to list</a>
 
-			<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">edit</a>
+			<div class="row">
+				{% for image in trick.tricksImages %}
+					<div class="card my-3" style="width: 18rem;">
+						<img src="{{ asset('uploads/images/' ~ image.getImagePath()) }}" class="card-img-top" alt="{{ trick.name }}">
+					</div>
+				{% endfor %}
+				{% for video in trick.trickVideos %}
+					<div class="card my-3" style="width: 18rem;">
+						<iframe src="{{ video.url }}" class="card-img-top"></iframe>
+					</div>
+				{% endfor %}
+			</div>
 
-			{{ include('trick/_delete_form.html.twig') }}
+			<tr>
+				<td class="container-fluid bg-2 text-center">{{ trick.description }}</td>
+			</tr>
+
+			<tr>
+				<td>{{ trick.name }}</td>
+			</tr>
+
+			{% if app.user %}
+				<h3>Ajouter un commentaire:</h3>
+				{{ form_start(commentForm) }}
+				{{ form_widget(commentForm) }}
+				{{ form_end(commentForm) }}
+			{% else %}
+				<p>Vous devez être connecté pour ajouter un commentaire.</p>
+			{% endif %}
 
 			{% for comment in comments %}
 				<div class="comment">
 					<p>{{ comment.content }}</p>
 					<small>by
-					{#	{{ comment.user.username }} #}
+						{{ comment.user.username }}
 						on
 						{{ comment.dateCreated|date('d/m/Y H:i') }}</small>
 				</div>
 			{% endfor %}
-
 		</tbody>
-	{% endblock %}
+	</table>
+
+	<a href="{{ path('app_trick_index') }}">back to list</a>
+
+	<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">edit</a>
+
+	{{ include('trick/_delete_form.html.twig') }}
+
+	{% for comment in comments %}
+		<div class="comment">
+			<p>{{ comment.content }}</p>
+			<small>by
+				{#	{{ comment.user.username }} #}
+				on
+				{{ comment.dateCreated|date('d/m/Y H:i') }}</small>
+		</div>
+	{% endfor %}
+{% endblock %}

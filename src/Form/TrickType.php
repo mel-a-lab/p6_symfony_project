@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Group;
 use App\Entity\Trick;
+use App\Form\TrickVideoType;
+use App\Form\Type\LinksType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\All;
@@ -75,30 +77,20 @@ class TrickType extends AbstractType
                 'attr' => ['accept' => 'image/*'], // Allow only image files to be selected
             ])
 
-            ->add('videos', CollectionType::class, [
-                'entry_type' => UrlType::class,
+          //  ->add('trickVideos', LinksType::class)
+
+            ->add('trickVideos', CollectionType::class, [
+                'entry_type' => TrickVideoType::class,
                 'label' => 'Vidéos',
                 'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
+
                 'required' => false,
+                'by_reference' => false,
+           
                 'attr' => [
                     'class' => 'videos-collection',
                 ],
-                'entry_options' => [
-                    'attr' => [
-                        'class' => 'video-input',
-                        'placeholder' => 'Ajouter une URL de vidéo',
-                    ],
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => 'Le champ "Vidéos" ne doit pas être vide.',
-                        ]),
-                        new Url([
-                            'message' => 'Veuillez saisir une URL valide pour la vidéo.',
-                        ]),
-                    ],
-                ],
+
                 'constraints' => [
                     new Count([
                         'max' => 10,

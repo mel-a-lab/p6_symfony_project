@@ -1,4 +1,84 @@
+{% block stylesheets %}
+	<link href="{{ asset('css/form.html.css') }}" rel="stylesheet"/>
+{% endblock %}
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+
+<div class="bloc_edit">
+	{{ form_label(form.group) }}
+	{{ form_widget(form.group) }}
+	{{ form_errors(form.group) }}
+</div class="bloc_edit">
+
+
+<div class="bloc_edit">
+	{{ form_label(form.name) }}
+	{{ form_widget(form.name) }}
+	{{ form_errors(form.name) }}
+</div>
+
+
+<div class="bloc_edit">
+	{{ form_label(form.description) }}
+	{{ form_widget(form.description) }}
+	{{ form_errors(form.description) }}
+</div>
+
+
+<div class="bloc_edit">
+	{% for image in trick.tricksImages %}
+		<div class="bloc_edit">
+			<img src="{{ asset('uploads/images/' ~ image.getImagePath()) }}" alt="{{ trick.name }}">
+			<a href="{{ path('app_trick_image_delete', {id: image.id}) }}">Supprimer</a>
+		</div class="bloc_edit">
+	{% endfor %}
+	{% for video in trick.trickVideos %}
+		<div class="bloc_edit">
+			<iframe src="{{ video.url }}"></iframe>
+		</div class="bloc_edit">
+	{% endfor %}
+</div>
+
+<div class="bloc_edit">
+	<div class="bloc_edit">
+		<label for="{{ form.images.vars.id }}">Images</label>
+		{{ form_widget(form.images, {'attr': {'id': form.images.vars.id}}) }}
+
+		{% for imageForm in form.images %}
+			<div class="bloc_edit">
+				{{ form_widget(imageForm) }}
+				{% if not imageForm.parent.parent.vars.value.images.empty %}
+					<a href="#" class="remove-item" data-remove-item-target=".images" data-remove-item-item=".image-item-{{ loop.index0 }}">supprimer</a>
+				{% endif %}
+			</div class="bloc_edit">
+		{% endfor %}
+
+		{{ form_help(form.images) }}
+		{{ form_errors(form.images) }}
+	</div>
+</div>
+
+<div class="bloc_edit">
+	<div class="bloc_edit">
+		{{ form_label(form.trickVideos) }}
+		<button type="button" data-collection-holder-class="videos">Add media</button>
+		<ul class="videos" data-index="{{ form.trickVideos|length }}" data-prototype="{{ form_widget(form.trickVideos.vars.prototype)|e('html_attr') }}">
+			{% for videoForm in form.trickVideos %}
+				<li>
+					{{ form_widget(videoForm.url) }}
+					{% if not videoForm.parent.parent.vars.value.trickVideos.empty %}
+						<a href="#" class="remove-item" data-remove-item-target=".videos" data-remove-item-item=".video-item-{{ loop.index0 }}">remove</a>
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ul>
+
+		{{ form_help(form.trickVideos) }}
+
+		{% do form.trickVideos.setRendered %}
+	</div>
+</div>
+
+<button>{{ button_label|default('Enregistrer') }}</button>
+
 {{ form_end(form) }}

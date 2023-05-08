@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TrickVideo{% endblock %}
+
+{% block body %}
+    <h1>TrickVideo</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ trick_video.id }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ trick_video.url }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_trick_video_index') }}">back to list</a>
+
+    <a href="{{ path('app_trick_video_edit', {'id': trick_video.id}) }}">edit</a>
+
+    {{ include('trick_video/_delete_form.html.twig') }}
+{% endblock %}

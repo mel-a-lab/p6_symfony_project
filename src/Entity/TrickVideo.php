@@ -2,24 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\TrickImageRepository;
+use App\Repository\TrickVideoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: TrickImageRepository::class)]
-
-
-class TrickImage
+#[ORM\Entity(repositoryClass: TrickVideoRepository::class)]
+class TrickVideo
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-    private $imageName;
 
     #[ORM\Column(length: 255)]
-    private ?string $imagePath = null;
+    private ?string $url = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tricksImages', cascade: ['persist'])]
+    #[ORM\ManyToOne(inversedBy: 'trickVideos')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Trick $trick = null;
 
@@ -28,14 +25,14 @@ class TrickImage
         return $this->id;
     }
 
-    public function getImagePath(): ?string
+    public function getUrl(): ?string
     {
-        return $this->imagePath;
+        return $this->url;
     }
 
-    public function setImagePath(string $imagePath): self
+    public function setUrl(string $url): self
     {
-        $this->imagePath = $imagePath;
+        $this->url = $url;
 
         return $this;
     }
@@ -51,9 +48,4 @@ class TrickImage
 
         return $this;
     }
-
-    public function getImageName(): ?string
-{
-    return $this->imageName;
-}
 }
