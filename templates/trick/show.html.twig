@@ -48,13 +48,13 @@
 
 			{% for comment in comments %}
 				<div class="comment">
+					<img src="{{ asset('/public/picture_profil/picture.png' ~ comment.user.profilePicture) }}" alt="Photo de profil"/>
+					<h3>{{ comment.user.username }}</h3>
+					<p>{{ comment.dateCreated|date('d/m/Y H:i') }}</p>
 					<p>{{ comment.content }}</p>
-					<small>by
-						{{ comment.user.username }}
-						on
-						{{ comment.dateCreated|date('d/m/Y H:i') }}</small>
 				</div>
 			{% endfor %}
+
 		</tbody>
 	</table>
 
@@ -64,13 +64,5 @@
 
 	{{ include('trick/_delete_form.html.twig') }}
 
-	{% for comment in comments %}
-		<div class="comment">
-			<p>{{ comment.content }}</p>
-			<small>by
-				{#	{{ comment.user.username }} #}
-				on
-				{{ comment.dateCreated|date('d/m/Y H:i') }}</small>
-		</div>
-	{% endfor %}
+
 {% endblock %}
