@@ -24,7 +24,7 @@ class Trick
     #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: TrickImage::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: TrickImage::class, cascade: ['persist','remove'])]
     private Collection $tricksImages;
 
     #[ORM\ManyToOne(targetEntity: Group::class)]
@@ -36,10 +36,10 @@ class Trick
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'proper_trick', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'proper_trick', targetEntity: Comment::class, cascade: ['remove'])]
     private Collection $comments;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: TrickVideo::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: TrickVideo::class, cascade: ['persist','remove'])]
     private Collection $trickVideos;
 
 
