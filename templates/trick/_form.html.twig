@@ -29,7 +29,7 @@
 	{% for image in trick.tricksImages %}
 		<div class="bloc_edit">
 			<img src="{{ asset('uploads/images/' ~ image.getImagePath()) }}" alt="{{ trick.name }}">
-			<a href="{{ path('app_trick_image_delete', {id: image.id}) }}">Supprimer</a>
+			  {{ include('trick_image/_delete_form.html.twig') }}
 		</div class="bloc_edit">
 	{% endfor %}
 	{% for video in trick.trickVideos %}
@@ -48,7 +48,7 @@
 			<div class="bloc_edit">
 				{{ form_widget(imageForm) }}
 				{% if not imageForm.parent.parent.vars.value.images.empty %}
-					<a href="#" class="remove-item" data-remove-item-target=".images" data-remove-item-item=".image-item-{{ loop.index0 }}">supprimer</a>
+				{{ include('trick_image/_delete_form.html.twig') }}
 				{% endif %}
 			</div class="bloc_edit">
 		{% endfor %}
