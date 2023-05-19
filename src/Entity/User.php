@@ -41,6 +41,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $profilePicture = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $activationToken = null;
+
+
+
     public function __construct()
     {
         $this->profilePicture = '/public/picture_profil/picture.png'; 
@@ -58,6 +63,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getActivationToken(): ?string
+    {
+        return $this->activationToken;
+    }
+
+    public function setActivationToken(?string $activationToken): self
+    {
+        $this->activationToken = $activationToken;
+
+        return $this;
+    }
 
 
     public function getId(): ?int
