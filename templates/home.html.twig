@@ -4,30 +4,65 @@
 {% endblock %}
 
 {% block body %}
-	<div style="position: relative;">
-		<img src="{{ asset('homepage_image/pexels-evgenia-kirpichnikova-1973293.jpg') }}" alt="image d'accueil" class="img-fluid w-100">
-		<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+
+	<div class="homepage-image-container">
+		<img src="{{ asset('homepage_image/pexels-evgenia-kirpichnikova-1973293.jpg') }}" alt="image d'accueil" class="homepage-image img-fluid">
+		<div class="homepage-image-content">
 			<h1 class="text-center text-white">Figure de snowboard</h1>
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="flash-messages">
+		{% for flashMessage in app.flashes('success') %}
+			<div class="alert alert-success" role="alert">
+				{{ flashMessage }}
+			</div>
+		{% endfor %}
+	</div>
+
+	<div class="row mx-5">
 		{% for trick in tricks %}
-			<div class="card my-3" style="width: 18rem;">
+			<div class="card my-4 custom-card" style="width: 18rem;">
 				{% if trick.tricksImages is not empty %}
 					<img src="{{ asset('uploads/images/' ~ trick.tricksImages.first().getImagePath()) }}" class="card-img-top" alt="{{ trick.name }}">
 				{% endif %}
-				<div class="card-body">
-					<h5 class="card-title">{{ trick.name }}</h5>
-					<p class="card-text">{{ trick.description }}</p>
-					<a href="{{ path('app_trick_show', {'slug': trick.slug}) }}" class="btn btn-primary">Voir</a>
-					{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-						<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}" class="btn btn-primary">Éditer</a>
-						
-					{% endif %}
+				<div class="card-body d-flex align-items-center justify-content-between">
+					<h5 class="card-title mb-0">
+						<a href="{{ path('app_trick_show', {'slug': trick.slug}) }}" class="text-dark">{{ trick.name }}</a>
+					</h5>
+					<div class="btn-group" role="group" aria-label="Basic example">
+						{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+							<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">
+								<img src="{{ asset('homepage_image/pen.svg') }}" alt="Pen Icon" width="24"/>
+							</a>
+						{% endif %}
+						<div>
+							{{ include('trick/_delete_form.html.twig') }}
+						</div>
+					</div>
 				</div>
-
-				 {{ include('trick/_delete_form.html.twig') }}
 			</div>
 		{% endfor %}
+
+	</div>
+
+	<style>
+		.homepage-image-container {
+			position: relative;
+			max-height: 650px; /* Définir la hauteur maximale souhaitée */
+			overflow: hidden;
+		}
+
+		.homepage-image {
+			width: 100%;
+			height: auto;
+		}
+
+		.homepage-image-content {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+	</style>
 {% endblock %}
