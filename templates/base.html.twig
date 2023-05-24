@@ -1,31 +1,56 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.2.3/united/bootstrap.min.css" integrity="sha512-OcJVUFAaQ1kaFvQN/nsIoTSTdCyF7aVSpNv5BkqRm9DvMCM+9hndo+Lz8mfZ9Q6tPOn+tSXjZT3g+CSzFeUArA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <script src="https://kit.fontawesome.com/92a15f3d1f.js" crossorigin="anonymous"></script>
-        <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link
+		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.2.3/united/bootstrap.min.css" integrity="sha512-OcJVUFAaQ1kaFvQN/nsIoTSTdCyF7aVSpNv5BkqRm9DvMCM+9hndo+Lz8mfZ9Q6tPOn+tSXjZT3g+CSzFeUArA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+		<script src="https://kit.fontawesome.com/92a15f3d1f.js" crossorigin="anonymous"></script>
+		<link href="{{ asset('css/styles.css') }}" rel="stylesheet"/>
 
-        {% block stylesheets %}
-          {#  {{ encore_entry_link_tags('app') }} #}
-        {% endblock %}
+		{% block stylesheets %}
+			{#  {{ encore_entry_link_tags('app') }} #}
+		{% endblock %}
 
-        {% block javascripts %}
-          {#  {{ encore_entry_script_tags('app') }} #}
-        {% endblock %}
-    </head>
-    <body>
-        {% block header %}
-            {% include "partials/_header.html.twig" %}
-        {% endblock %}
-        {% block body %}{% endblock %}
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+		{% block javascripts %}
+			{#  {{ encore_entry_script_tags('app') }} #}
+		{% endblock %}
+	</head>
+	<body>
+		{% block header %}
+			{% include "partials/_header.html.twig" %}
+		{% endblock %}
+		{% block body %}{% endblock %}
 
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-        <script src="/js/index.js"></script>
-    </body>
+		{% block footer %}
+			<footer class="mobile-footer" style="background-color: aquamarine">
+				<a href="#">
+					<i class="fa fa-home"></i>
+				</a>
+				{# Icone Maison #}
+				<a href="#">
+					<i class="fa fa-bars"></i>
+				</a>
+				{# Icone Sandwich (menu) #}
+				<a href="#">
+					<i class="fa fa-sign-out-alt"></i>
+				</a>
+				{# Icone Deconnexion #}
+			</footer>
+		{% endblock %}
+
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+		<script src="/js/index.js"></script>
+	</body>
+
+
 </html>

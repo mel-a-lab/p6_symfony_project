@@ -1,0 +1,17 @@
+.mobile-footer {
+    display: none;
+    position: fixed; /* fixe le footer à une position */
+    bottom: 0; /* le place au bas de l'écran */
+    width: 100%; /* s'étend sur toute la largeur de l'écran */
+    display: flex;
+    justify-content: space-around;
+    align-items: center; /* Centre les icônes verticalement */
+    height: 60px; /* Ajuster en fonction de la hauteur désirée de votre footer */
+}
+
+@media screen and (max-width: 600px) {
+    .mobile-footer {
+        display: flex;
+    }
+}
+

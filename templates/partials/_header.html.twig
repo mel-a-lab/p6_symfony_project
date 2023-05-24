@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="header_desktop">
   <div class="container-fluid">
     <a class="navbar-brand" href="{{path('home.index')}}">Snowtricks</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,3 +28,15 @@
     </div>
   </div>
 </nav>
+
+<style>
+
+@media screen and (max-width: 600px) {
+    #header_desktop {
+        display: none;
+    }
+}
+</style>
+
+
+

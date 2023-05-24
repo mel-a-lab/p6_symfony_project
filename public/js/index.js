@@ -11,7 +11,8 @@ $(document).ready(function() {
     
     const newLinkLi = document.createElement('li').append(addVideoLink);
     const collectionHolder = document.querySelector('ul.videos')
-    collectionHolder.appendChild(addVideoLink);
+    if(collectionHolder)
+        collectionHolder.appendChild(addVideoLink);
     
     const addFormToCollection = (e) => {
        const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
