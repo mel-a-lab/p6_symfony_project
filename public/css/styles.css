@@ -1,17 +1,16 @@
 .mobile-footer {
-    display: none;
-    position: fixed; /* fixe le footer à une position */
-    bottom: 0; /* le place au bas de l'écran */
-    width: 100%; /* s'étend sur toute la largeur de l'écran */
-    display: flex;
+    position: fixed;
+    bottom: 0; 
+    width: 100%; 
+    display: none;  /* Footer is hidden by default */
     justify-content: space-around;
-    align-items: center; /* Centre les icônes verticalement */
-    height: 60px; /* Ajuster en fonction de la hauteur désirée de votre footer */
+    align-items: center; 
+    height: 60px;
+    background-color: aquamarine;
 }
 
 @media screen and (max-width: 600px) {
     .mobile-footer {
-        display: flex;
+        display: flex;  /* Footer is visible on screens less than or equal to 600px wide */
     }
 }
-

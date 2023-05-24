@@ -29,7 +29,7 @@
 		{% block body %}{% endblock %}
 
 		{% block footer %}
-			<footer class="mobile-footer" style="background-color: aquamarine">
+			<footer class="mobile-footer">
 				<a href="#">
 					<i class="fa fa-home"></i>
 				</a>
@@ -38,10 +38,12 @@
 					<i class="fa fa-bars"></i>
 				</a>
 				{# Icone Sandwich (menu) #}
-				<a href="#">
-					<i class="fa fa-sign-out-alt"></i>
-				</a>
-				{# Icone Deconnexion #}
+
+				{% if app.user %}
+
+					<a class="fa fa-sign-out-alt" href="{{ path('app_logout') }}">Logout</a>
+
+				{% endif %}
 			</footer>
 		{% endblock %}
 

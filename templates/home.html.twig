@@ -5,12 +5,20 @@
 
 {% block body %}
 
-	<div class="homepage-image-container">
+	<div class="homepage-image-container" style="position: relative;">
 		<img src="{{ asset('homepage_image/pexels-evgenia-kirpichnikova-1973293.jpg') }}" alt="image d'accueil" class="homepage-image img-fluid">
 		<div class="homepage-image-content">
 			<h1 class="text-center text-white">Figure de snowboard</h1>
 		</div>
+
+		<a href="#bottom">
+			<svg  id="top_icone" xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="#fff" class="bi bi-arrow-down-circle" viewbox="0 0 16 16" style="position: absolute; bottom: 10px; right: 10px;">
+				<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+			</svg>
+		</a>
 	</div>
+
+	<div id="top"></div>
 
 	<div class="flash-messages">
 		{% for flashMessage in app.flashes('success') %}
@@ -30,6 +38,7 @@
 					<h5 class="card-title mb-0">
 						<a href="{{ path('app_trick_show', {'slug': trick.slug}) }}" class="text-dark">{{ trick.name }}</a>
 					</h5>
+
 					<div class="btn-group" role="group" aria-label="Basic example">
 						{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 							<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">
@@ -37,7 +46,9 @@
 							</a>
 						{% endif %}
 						<div>
+						{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 							{{ include('trick/_delete_form.html.twig') }}
+							{% endif %}
 						</div>
 					</div>
 				</div>
@@ -45,11 +56,13 @@
 		{% endfor %}
 
 	</div>
+	<div id="bottom"></div>
+
 
 	<style>
 		.homepage-image-container {
 			position: relative;
-			max-height: 650px; /* Définir la hauteur maximale souhaitée */
+			max-height: 650px;
 			overflow: hidden;
 		}
 
@@ -65,4 +78,10 @@
 			transform: translate(-50%, -50%);
 		}
 	</style>
+	<a href="#top">
+		<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-arrow-up-circle" viewbox="0 0 16 16" style="position: absolute; right: 10px;">
+			<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+		</svg>
+	</a>
+
 {% endblock %}
