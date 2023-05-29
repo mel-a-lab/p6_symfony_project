@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -147,14 +148,13 @@ class TrickController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'app_trick_delete', methods: ['POST'])]
-    public function delete(Request $request, Trick $trick, TrickRepository $trickRepository, UrlGeneratorInterface $urlGenerator): Response
+    public function delete(Request $request, Trick $trick, TrickRepository $trickRepository, UrlGeneratorInterface $urlGenerator, SessionInterface $session): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $session->getId(), $request->request->get('_token'))) {
             $trickRepository->remove($trick, true);
             $this->addFlash('success', 'Le trick a été supprimé avec succès.');
         }
-
+    
         return $this->redirectToRoute('home.index', [], Response::HTTP_SEE_OTHER);
     }
-
 }
