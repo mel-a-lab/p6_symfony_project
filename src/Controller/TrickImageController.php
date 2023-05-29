@@ -73,6 +73,6 @@ class TrickImageController extends AbstractController
             $trickImageRepository->remove($trickImage, true);
         }
 
-        return $this->redirectToRoute('app_trick_image_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_trick_edit', ['slug' => $trickImage->getTrick()->getSlug()], Response::HTTP_SEE_OTHER);
     }
 }
