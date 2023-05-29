@@ -48,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->profilePicture = '/public/picture_profil/picture.png'; 
+        $this->profilePicture = '/picture_profil/picture.png';
     }
 
     public function getProfilePicture(): ?string

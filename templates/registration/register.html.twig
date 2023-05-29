@@ -10,7 +10,7 @@
                     <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
                 {% endfor %}
     
-                <h1>Register</h1>
+                <h1>Inscription</h1>
     
                 {{ form_start(registrationForm) }}
                     <div class="mb-3">
@@ -36,28 +36,26 @@
                             'label': 'Password',
                             'attr': {
                                 'class': 'form-control',
-                                'placeholder': 'Password'
+                                'placeholder': 'Mot de passe'
                             }
                         }) }}
                     </div>
     
                     <div class="form-check mb-3">
                         {{ form_row(registrationForm.agreeTerms, {
-                            'label': 'Agree to Terms',
+                            'label': 'Accepter les conditions',
                             'attr': {
                                 'class': 'form-check-input'
-                            }
-                        }) }}
-                        {{ form_label(registrationForm.agreeTerms, null, {
-                            'label_attr': {
-                                'class': 'form-check-label'
                             }
                         }) }}
                     </div>
     
                     <button type="submit" class="btn btn-primary">Register</button>
                 {{ form_end(registrationForm) }}
+
             </div>
         </div>
     </div>
 {% endblock %}
+
+

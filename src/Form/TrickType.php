@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,13 +25,13 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TrickType extends AbstractType
 {
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('group', EntityType::class, [
                 'class' => Group::class,
-                'choice_label' => 'name', 
+                'choice_label' => 'name',
                 'constraints' => [
                     new NotNull([
                         'message' => 'Le groupe ne doit pas être vide.'
@@ -45,13 +46,18 @@ class TrickType extends AbstractType
                     ])
                 ]
 
-            ]) 
+            ])
 
             ->add('description', TextareaType::class, [
                 'label' => 'Contenu de l\'article',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Le champ "Description" ne doit pas être vide.'
+                    ]),
+                    new Length([
+                        'max' => 10000,
+                        // Modifier le nombre ici selon la longueur maximale que vous voulez
+                        'maxMessage' => 'La description ne doit pas dépasser {{ limit }} caractères.',
                     ])
                 ]
             ])
@@ -72,12 +78,13 @@ class TrickType extends AbstractType
                             ])
                         ]
                     ])
-            ],
-                'multiple' => true, // Allow multiple images
+                ],
+                'multiple' => true,
+                // Allow multiple images
                 'attr' => ['accept' => 'image/*'], // Allow only image files to be selected
             ])
 
-          //  ->add('trickVideos', LinksType::class)
+            //  ->add('trickVideos', LinksType::class)
 
             ->add('trickVideos', CollectionType::class, [
                 'entry_type' => TrickVideoType::class,
@@ -86,7 +93,7 @@ class TrickType extends AbstractType
 
                 'required' => false,
                 'by_reference' => false,
-           
+
                 'attr' => [
                     'class' => 'videos-collection',
                 ],

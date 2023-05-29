@@ -2,7 +2,7 @@
     position: fixed;
     bottom: 0; 
     width: 100%; 
-    display: none;  /* Footer is hidden by default */
+    display: none; 
     justify-content: space-around;
     align-items: center; 
     height: 60px;

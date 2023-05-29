@@ -3,17 +3,28 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Event\PostSubmitEvent;
+
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+
 
 class RegistrationFormType extends AbstractType
 {
+    private $userRepository;
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -28,8 +39,6 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
@@ -38,13 +47,28 @@ class RegistrationFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
+                        'minMessage' => 'Votre mot de passe doit être composé d\'au moins {{ limit }} caractères',
                         'max' => 4096,
                     ]),
                 ],
             ])
         ;
+
+        $builder->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (PostSubmitEvent $event) {
+                $form = $event->getForm();
+                $username = $form->get('username')->getData();
+        
+                $existingUser = $this->userRepository->findOneBy(['username' => $username]);
+        
+                if ($existingUser) {
+                    $form->get('username')->addError(new FormError('Cet username "' . $username . '" est déjà utilisé.'));
+                }
+            }
+        );
+        
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

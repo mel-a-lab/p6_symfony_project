@@ -9,24 +9,23 @@
 			{{ message }}
 		</div>
 	{% endfor %}
-	<h1>Trick index</h1>
+	<h1>Index des figures</h1>
 
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Id</th>
-				<th>Name</th>
-				<th>actions</th>
+				<th>Nom</th>
+				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for trick in tricks %}
 				<tr>
-					<td>{{ trick.id }}</td>
+				
 					<td>{{ trick.name }}</td>
 					<td>
-						<a href="{{ path('app_trick_show', {'slug': trick.slug}) }}">show</a>
-						<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">edit</a>
+						<a href="{{ path('app_trick_show', {'slug': trick.slug}) }}">Voir</a>
+						<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">Editer</a>
 					</td>
 				</tr>
 			{% else %}
@@ -37,5 +36,5 @@
 		</tbody>
 	</table>
 
-	<a href="{{ path('app_trick_new') }}">Create new</a>
+	<a href="{{ path('app_trick_new') }}">Création nouvelle figure</a>
 {% endblock %}

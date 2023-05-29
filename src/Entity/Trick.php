@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -44,11 +45,14 @@ class Trick
     private Collection $trickVideos;
 
 
+
+
     public function __construct()
     {
         $this->tricksImages = new ArrayCollection();
         $this->trickVideos = new ArrayCollection();
         $this->comments = new ArrayCollection();
+       
     }
 
     #[ORM\PrePersist]
@@ -202,4 +206,5 @@ public function removeTrickVideo(TrickVideo $trickVideo): self
 
         return $this;
     }
+
 }

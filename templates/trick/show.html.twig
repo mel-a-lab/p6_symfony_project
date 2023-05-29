@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Figure</h1>
 
 	<table class="table">
 		<tbody>
@@ -16,10 +15,11 @@
 				<div class="homepage-image-content">
 					<h1 class="text-center text-white">{{ trick.name }}</h1>
 				</div>
+				<div style="position: absolute; top: 10px; right: 10px; background-color: #fff; border-radius: 10px; display: flex; padding : 4px;"></div>
 			</div>
 
 
-			<div class="row">
+			<div class="row flex-row flex-nowrap overflow-auto" id="slider_image_video">
 				{% for image in trick.tricksImages %}
 					<div class="card my-3" style="width: 18rem;">
 						<img src="{{ asset('uploads/images/' ~ image.getImagePath()) }}" class="card-img-top" alt="{{ trick.name }}">
@@ -31,41 +31,42 @@
 					</div>
 				{% endfor %}
 			</div>
+	
+			<div id="description_element">
+				{{ trick.description }}
+			</div>
 
-			<tr>
-				<td class="container-fluid bg-2 text-center">{{ trick.description }}</td>
-			</tr>
+			<div id="comment_element">
+				{% for comment in comments %}
+					<div class="comment">
+						<img src="{{ asset(comment.user.profilePicture) }}" alt="Photo de profil"/>
+						<h3>{{ comment.user.username }}</h3>
+						<p>{{ comment.dateCreated|date('d/m/Y H:i') }}</p>
+						<p>{{ comment.content }}</p>
+					</div>
+				{% endfor %}
+				{% if app.user %}
+					<h3>Ajouter un commentaire:</h3>
+					{{ form_start(commentForm) }}
+					{{ form_widget(commentForm) }}
+					{{ form_end(commentForm) }}
+				{% else %}
+					<p>Vous devez être connecté pour ajouter un commentaire.</p>
+				{% endif %}
 
-			<tr>
-				<td>{{ trick.name }}</td>
-			</tr>
 
-			{% if app.user %}
-				<h3>Ajouter un commentaire:</h3>
-				{{ form_start(commentForm) }}
-				{{ form_widget(commentForm) }}
-				{{ form_end(commentForm) }}
-			{% else %}
-				<p>Vous devez être connecté pour ajouter un commentaire.</p>
-			{% endif %}
+			</div>
+					<div id="group_element">
+				{{ trick.group.name  }}
+			</div>
 
-			{% for comment in comments %}
-				<div class="comment">
-					<img src="{{ asset('/picture_profil/picture.png' ~ comment.user.profilePicture) }}" alt="Photo de profil"/>
-					<h3>{{ comment.user.username }}</h3>
-					<p>{{ comment.dateCreated|date('d/m/Y H:i') }}</p>
-					<p>{{ comment.content }}</p>
-				</div>
-			{% endfor %}
+
 
 		</tbody>
 	</table>
 
-	<a href="{{ path('app_trick_index') }}">back to list</a>
+	<a href="{{ path('home.index') }}" class="btn btn-primary" style="background-color: cornflowerblue; padding: px;">Retour accueil</a>
 
-	<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}">edit</a>
-
-	{{ include('trick/_delete_form.html.twig') }}
 
 	<style>
 		.homepage-image-container {
@@ -89,6 +90,37 @@
 		.img-responsive {
 			height: 500px;
 			width: auto;
+		}
+
+		.card {
+			margin-right: 10px;
+		}
+
+		#slider_image_video {
+			margin: 0 60px;
+		}
+
+		#comment_element {
+			max-width: 900px;
+			margin: 10px auto;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+			border-radius: 20px;
+			padding: 20px;
+		}
+
+		#description_element {
+			max-width: 900px;
+			margin: 20px auto;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+			border-radius: 20px;
+			padding: 20px;
+		}
+		#group_element {
+			max-width: 900px;
+			margin: 20px auto;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+			border-radius: 20px;
+			padding: 20px;
 		}
 	</style>
 

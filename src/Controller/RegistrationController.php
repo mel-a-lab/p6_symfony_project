@@ -56,6 +56,10 @@ class RegistrationController extends AbstractController
             ;
 
             $mailer->send($email);
+            $this->addFlash(
+                'verify_email_success',
+                'Un email de validation vous a été envoyé.'
+            );
 
             // Redirect to the login page after successful registration
             return $this->redirectToRoute('app_login');
@@ -81,7 +85,11 @@ class RegistrationController extends AbstractController
 
         $entityManager->flush();
 
-        // @TODO: Add a flash message, redirect to the login page, etc.
+    
+        $this->addFlash(
+            'account_validated',
+            'Votre compte a été validé.'
+        );
 
         return $this->redirectToRoute('app_login');
     }
