@@ -50,19 +50,21 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
-    public function checkCredentials($password, UserInterface $user)
-    {
-        if (!$user->isVerified()) {
-            throw new CustomUserMessageAuthenticationException('Votre compte n\'est pas encore vérifié. Veuillez vérifier votre e-mail pour le lien d\'activation.');
-        }
 
-        // Verify the password is valid for the user
-        if (!$this->passwordHasher->isPasswordValid($user, $password)) {
-            throw new CustomUserMessageAuthenticationException('Invalid credentials.');
-        }
-
-        return true;
+    public function checkCredentials(string $credentials, UserInterface $user): bool
+{
+    if (!$user->isVerified()) {
+        throw new CustomUserMessageAuthenticationException('Votre compte n\'est pas encore vérifié. Veuillez vérifier votre e-mail pour le lien d\'activation.');
     }
+
+    // Verify the password is valid for the user
+    if (!$this->passwordHasher->isPasswordValid($user, $credentials)) {
+        throw new CustomUserMessageAuthenticationException('Invalid credentials.');
+    }
+
+    return true;
+}
+
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
