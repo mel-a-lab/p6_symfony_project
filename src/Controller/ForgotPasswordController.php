@@ -41,9 +41,8 @@ class ForgotPasswordController extends AbstractController
                 ;
 
                 $mailer->send($mail);
-
-                $this->addFlash('success', 'A password reset email has been sent.');
-
+               
+    
                 return $this->redirectToRoute('app_login');
             }
 
@@ -62,7 +61,8 @@ class ForgotPasswordController extends AbstractController
     public function reset(Request $request, string $token, UserPasswordHasherInterface $passwordEncoder, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
-            $user = $userRepository->findOneBy(['resetToken' => $token]);
+            $username = $request->request->get('username');
+            $user = $userRepository->findOneBy(['username' => $username, 'resetToken' => $token]);    
 
             if ($user) {
                 $user->setPassword(
@@ -74,7 +74,7 @@ class ForgotPasswordController extends AbstractController
                 $user->setResetToken(null);
                 $entityManager->flush();
 
-                $this->addFlash('success', 'Your password has been changed.');
+                $this->addFlash('success', 'Votre mot de passe a été modifié.');
 
                 return $this->redirectToRoute('app_login');
             }

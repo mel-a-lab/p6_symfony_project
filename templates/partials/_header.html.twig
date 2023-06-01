@@ -11,9 +11,11 @@
 						<span class="visually-hidden">(current)</span>
 					</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{path('app_trick_index')}}">Tricks</a>
-				</li>
+				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('app_trick_new')}}">Tricks</a>
+					</li>
+				{% endif %}
 				<li class="nav-item">
 					<a class="nav-link" href="{{path('login')}}">Sign in</a>
 				</li>
@@ -38,7 +40,7 @@
 </nav>
 
 <style>
-	@media screen and (max-width: 600px) {
+	@media screen and(max-width: 600px) {
 		#header_desktop {
 			display: none;
 		}

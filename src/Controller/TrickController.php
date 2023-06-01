@@ -11,6 +11,7 @@ use App\Repository\TrickRepository;
 use App\Repository\CommentRepository;
 use App\Repository\TrickImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -74,7 +75,7 @@ class TrickController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'app_trick_show', methods: ['GET', 'POST'])]
-    public function show(Request $request, Trick $trick, CommentRepository $commentRepository, EntityManagerInterface $entityManager): Response
+    public function show(Request $request, Trick $trick, CommentRepository $commentRepository, EntityManagerInterface $entityManager, int $page = 1): Response
     {
         $comment = new Comment();
 
@@ -96,12 +97,26 @@ class TrickController extends AbstractController
             }
         }
 
-        $comments = $commentRepository->findBy(['proper_trick' => $trick]);
+        $itemsPerPage = 10;
+
+        $query = $commentRepository->createQueryBuilder('c')
+            ->andWhere('c.proper_trick = :trick')
+            ->setParameter('trick', $trick)
+            ->orderBy('c.dateCreated', 'DESC')
+            ->getQuery();
+
+        $paginator = new Paginator($query);
+        $paginator
+            ->getQuery()
+            ->setFirstResult($itemsPerPage * ($page - 1)) // Offset
+            ->setMaxResults($itemsPerPage); // Limit
 
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
-            'comments' => $comments,
+            'comments' => $paginator,
             'commentForm' => $form->createView(),
+            'totalPages' => ceil($paginator->count() / $itemsPerPage),
+            'currentPage' => $page
         ]);
 
     }
@@ -150,11 +165,11 @@ class TrickController extends AbstractController
     #[Route('/delete/{id}', name: 'app_trick_delete', methods: ['POST'])]
     public function delete(Request $request, Trick $trick, TrickRepository $trickRepository, UrlGeneratorInterface $urlGenerator, SessionInterface $session): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $session->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete-trick', $request->request->get('_token'))) {
             $trickRepository->remove($trick, true);
             $this->addFlash('success', 'Le trick a été supprimé avec succès.');
         }
-    
+
         return $this->redirectToRoute('home.index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -61,6 +61,7 @@ class RegistrationController extends AbstractController
                 'Un email de validation vous a été envoyé.'
             );
 
+        
             // Redirect to the login page after successful registration
             return $this->redirectToRoute('app_login');
         }

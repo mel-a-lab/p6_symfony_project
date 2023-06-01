@@ -31,7 +31,7 @@
 					</div>
 				{% endfor %}
 			</div>
-	
+
 			<div id="description_element">
 				{{ trick.description }}
 			</div>
@@ -44,6 +44,8 @@
 						<p>{{ comment.dateCreated|date('d/m/Y H:i') }}</p>
 						<p>{{ comment.content }}</p>
 					</div>
+				{% else %}
+					<p>No comments yet.</p>
 				{% endfor %}
 				{% if app.user %}
 					<h3>Ajouter un commentaire:</h3>
@@ -54,75 +56,74 @@
 					<p>Vous devez être connecté pour ajouter un commentaire.</p>
 				{% endif %}
 
-
-			</div>
-					<div id="group_element">
-				{{ trick.group.name  }}
-			</div>
-
-
-
+				<div class="pagination">
+					{% for page in 1..totalPages %}
+						{% if page == currentPage %}
+							<span>{{ page }}</span>
+						{% else %}
+							<a href="{{ path('app_trick_show', {'slug': trick.slug, 'page': page}) }}">{{ page }}</a>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</tbody>
 		</tbody>
-	</table>
-
-	<a href="{{ path('home.index') }}" class="btn btn-primary" style="background-color: cornflowerblue; padding: px;">Retour accueil</a>
-
-
-	<style>
-		.homepage-image-container {
-			position: relative;
-			max-height: 650px; /* Définir la hauteur maximale souhaitée */
-			overflow: hidden;
-		}
-
-		.homepage-image {
-			width: 100%;
-			height: auto;
-		}
-
-		.homepage-image-content {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-		}
-
-		.img-responsive {
-			height: 500px;
-			width: auto;
-		}
-
-		.card {
-			margin-right: 10px;
-		}
-
-		#slider_image_video {
-			margin: 0 60px;
-		}
-
-		#comment_element {
-			max-width: 900px;
-			margin: 10px auto;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-			border-radius: 20px;
-			padding: 20px;
-		}
-
-		#description_element {
-			max-width: 900px;
-			margin: 20px auto;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-			border-radius: 20px;
-			padding: 20px;
-		}
-		#group_element {
-			max-width: 900px;
-			margin: 20px auto;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-			border-radius: 20px;
-			padding: 20px;
-		}
-	</style>
+	</div>
+	<div id="group_element">
+		{{ trick.group.name  }}
+	</div>
 
 
-{% endblock %}
+</tbody></table><a href="{{ path('home.index') }}" class="btn btn-primary" style="background-color: cornflowerblue; padding: px;">Retour accueil</a><style>
+.homepage-image-container {
+	position: relative;
+	max-height: 650px; /* Définir la hauteur maximale souhaitée */
+	overflow: hidden;
+}
+
+.homepage-image {
+	width: 100%;
+	height: auto;
+}
+
+.homepage-image-content {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.img-responsive {
+	height: 500px;
+	width: auto;
+}
+
+.card {
+	margin-right: 10px;
+}
+
+#slider_image_video {
+	margin: 0 60px;
+}
+
+#comment_element {
+	max-width: 900px;
+	margin: 10px auto;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+	border-radius: 20px;
+	padding: 20px;
+}
+
+#description_element {
+	max-width: 900px;
+	margin: 20px auto;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+	border-radius: 20px;
+	padding: 20px;
+}
+#group_element {
+	max-width: 900px;
+	margin: 20px auto;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+	border-radius: 20px;
+	padding: 20px;
+}</style>{% endblock %}

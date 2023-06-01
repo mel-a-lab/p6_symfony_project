@@ -3,11 +3,11 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-    {% for flash_message in app.flashes('verify_email_success') %}
+    {% for flash_message in app.flashes('account_validated') %}
         <div class="alert alert-success" role="alert">{{ flash_message }}</div>
     {% endfor %}
 
-    {% for flash_message in app.flashes('account_validated') %}
+       {% for flash_message in app.flashes('verify_email_success') %}
         <div class="alert alert-success" role="alert">{{ flash_message }}</div>
     {% endfor %}
 

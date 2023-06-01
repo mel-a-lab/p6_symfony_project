@@ -1,16 +1,16 @@
 {% block stylesheets %}
-    <style>
-        .banner {
-            height: 700px;
-            object-fit: cover; 
-        }
+	<style>
+		.banner {
+			height: 700px;
+			object-fit: cover;
+		}
 
-        @media (max-width: 992px) {
-            .banner {
-                height: 50vh;
-            }
-        }
-    </style>
+		@media(max-width: 992px) {
+			.banner {
+				height: 50vh;
+			}
+		}
+	</style>
 {% endblock %}
 
 <div class="container-fluid p-0">
@@ -20,12 +20,12 @@
 			<h1 class="text-center text-white">{{ trick.name }}</h1>
 		</div>
 		{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-		<div class="position-absolute top-0 end-0 bg-white rounded p-1 d-flex">
-			<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}" class="btn btn-light">
-				<img src="{{ asset('homepage_image/pen.svg') }}" alt="Pen Icon" width="24"/>
-			</a>
-			{{ include('trick/_delete_form.html.twig') }}
-		</div>
+			<div class="position-absolute top-0 end-0 bg-white rounded p-1 d-flex">
+				<a href="{{ path('app_trick_edit', {'slug': trick.slug}) }}" class="btn btn-light">
+					<img src="{{ asset('homepage_image/pen.svg') }}" alt="Pen Icon" width="24"/>
+				</a>
+				{{ include('trick/_delete_form.html.twig') }}
+			</div>
 		{% endif %}
 	</div>
 
@@ -42,22 +42,26 @@
 		{% for video in trick.trickVideos %}
 			<div class="card mx-3" style="width: 18rem;">
 				<iframe src="{{ video.url }}" class="card-img-top"></iframe>
+				{{ include('trick_video/_delete_form.html.twig') }}
 			</div>
 		{% endfor %}
 	</div>
 
-	{{ form_start(form, {'attr': {'class': 'container'}}) }}
-	{% for field in form %}
-		<div class="mb-3">
-			{{ form_label(field, null, {'label_attr': {'class': 'form-label'}}) }}
-			{{ form_widget(field, {'attr': {'class': 'form-control'}}) }}
-			{{ form_errors(field) }}
+	{{ form_start(form) }}
+	<div class="row mb-4 px-5">
+		<div class="col-12 col-md-10 mx-auto">
+			{{ form_label(form.trickVideos) }}
+			<button type="button" class="add_item_link" data-collection-holder-class="videos">Add media</button>
+			<ul class="videos" data-index="{{ form.trickVideos|length }}" data-prototype="{{ form_widget(form.trickVideos.vars.prototype)|e('html_attr') }}"></ul>
+
+			{{ form_help(form.trickVideos) }}
+
+			{% do form.trickVideos.setRendered %}
 		</div>
-	{% endfor %}
-	<button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+	</div>
+	<button class="btn btn-primary"style="background-color: cornflowerblue;" >{{ button_label|default('Save') }}</button>
 	{{ form_end(form) }}
 
-</div>
-  <a href="{{ path('home.index') }}"  class="btn btn-primary" style="background-color: cornflowerblue; padding: px;" >Retour accueil</a>
 
+</div>
 
