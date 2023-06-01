@@ -42,7 +42,7 @@
 		{% for video in trick.trickVideos %}
 			<div class="card mx-3" style="width: 18rem;">
 				<iframe src="{{ video.url }}" class="card-img-top"></iframe>
-				{{ include('trick_video/_delete_form.html.twig') }}
+				{% include 'trick_video/_delete_form.html.twig' with {'trick_video': video } %}
 			</div>
 		{% endfor %}
 	</div>
