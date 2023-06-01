@@ -69,7 +69,7 @@ class TrickVideoController extends AbstractController
     #[Route('/{id}', name: 'app_trick_video_delete', methods: ['POST'])]
     public function delete(Request $request, TrickVideo $trickVideo, TrickVideoRepository $trickVideoRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$trickVideo->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete-trick-video', $request->request->get('_token'))) {
             $trickVideoRepository->remove($trickVideo, true);
         }
 

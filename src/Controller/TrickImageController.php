@@ -69,7 +69,7 @@ class TrickImageController extends AbstractController
     #[Route('/{id}', name: 'app_trick_image_delete', methods: ['POST'])]
     public function delete(Request $request, TrickImage $trickImage, TrickImageRepository $trickImageRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$trickImage->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete-trick-image', $request->request->get('_token'))) {
             $trickImageRepository->remove($trickImage, true);
         }
 
