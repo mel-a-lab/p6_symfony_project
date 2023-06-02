@@ -50,7 +50,7 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
-    public function checkCredentials($password, UserInterface $user): bool
+    public function checkCredentials(string $password, UserInterface $user): bool
     {
         if (!$user->isVerified()) {
             throw new CustomUserMessageAuthenticationException('Votre compte n\'est pas encore vérifié. Veuillez vérifier votre e-mail pour le lien d\'activation.');
