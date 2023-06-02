@@ -39,7 +39,7 @@ class HomeController extends AbstractController
 
 
     #[Route('/email')]
-    public function sendMail(MailerInterface $mailer, Request $request)
+    public function sendMail(MailerInterface $mailer, Request $request): void
     {
         // ...
 
