@@ -41,8 +41,7 @@ class ForgotPasswordController extends AbstractController
                 ;
 
                 $mailer->send($mail);
-               
-    
+
                 return $this->redirectToRoute('app_login');
             }
 

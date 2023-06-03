@@ -46,7 +46,7 @@ class RegistrationController extends AbstractController
 
             // Send confirmation email
             $email = (new TemplatedEmail())
-                ->from(new Address('contact@snowtricks.com', 'No Reply'))
+                ->from(new Address('contact@snowtricks.com', 'Validation de la création de votre compte'))
                 ->to($user->getEmail())
                 ->subject('Please confirm your email')
                 ->htmlTemplate('registration/confirmation_email.html.twig')
