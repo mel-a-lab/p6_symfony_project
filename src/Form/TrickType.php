@@ -29,17 +29,9 @@ class TrickType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('group', EntityType::class, [
-                'class' => Group::class,
-                'choice_label' => 'name',
-                'constraints' => [
-                    new NotNull([
-                        'message' => 'Le groupe ne doit pas être vide.'
-                    ])
-                ]
-            ])
             ->add('name', TextType::class, [
                 'label' => 'Nom de la figure',
+                'attr' => ['class' => 'form-control'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Le champ "Nom" ne doit pas être vide.'
@@ -50,6 +42,7 @@ class TrickType extends AbstractType
 
             ->add('description', TextareaType::class, [
                 'label' => 'Contenu de l\'article',
+                'attr' => ['class' => 'form-control'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Le champ "Description" ne doit pas être vide.'
@@ -62,8 +55,20 @@ class TrickType extends AbstractType
                 ]
             ])
 
+            ->add('group', EntityType::class, [
+                'class' => Group::class,
+                'choice_label' => 'name',
+                'attr' => ['class' => 'form-control'],
+                'constraints' => [
+                    new NotNull([
+                        'message' => 'Le groupe ne doit pas être vide.'
+                    ])
+                ]
+            ])
+
             ->add('images', FileType::class, [
                 'label' => 'Images',
+                'attr' => ['class' => 'form-control'],
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
@@ -89,6 +94,7 @@ class TrickType extends AbstractType
             ->add('trickVideos', CollectionType::class, [
                 'entry_type' => TrickVideoType::class,
                 'label' => 'Vidéos',
+                'attr' => ['class' => 'form-control'],
                 'allow_add' => true,
 
                 'required' => false,

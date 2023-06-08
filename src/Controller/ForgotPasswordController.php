@@ -30,7 +30,7 @@ class ForgotPasswordController extends AbstractController
                 $entityManager->flush();
 
                 $mail = (new TemplatedEmail())
-                    ->from(new Address('expediteur@demo.test', 'Mon nom'))
+                    ->from(new Address('expediteur@demo.test', 'Réinitialisation mot de passe'))
                     ->to($user->getEmail())
                     ->subject('Your password reset request')
                     ->htmlTemplate('security/reset_password_email.html.twig')
@@ -41,11 +41,14 @@ class ForgotPasswordController extends AbstractController
                 ;
 
                 $mailer->send($mail);
+                
+                $this->addFlash('email_reset', 'Le mail de réinitialisation de mot de passe a bien été envoyé');
 
                 return $this->redirectToRoute('app_login');
             }
 
-            $this->addFlash('error', 'No account found with this username.');
+            $this->addFlash('error', 'Aucun compte n\'a été trouvé avec ce nom d\'utilisateur
+            .');
 
             return $this->redirectToRoute('app_forgot_password_request');
         }

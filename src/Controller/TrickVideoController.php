@@ -73,6 +73,6 @@ class TrickVideoController extends AbstractController
             $trickVideoRepository->remove($trickVideo, true);
         }
 
-        return $this->redirectToRoute('app_trick_video_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_trick_edit', ['slug' => $trickVideo->getTrick()->getSlug()], Response::HTTP_SEE_OTHER);
     }
 }

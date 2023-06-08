@@ -29,8 +29,6 @@
 		{% endif %}
 	</div>
 
-	<!-- Remaining part of the twig template -->
-
 
 	<div class="row flex-row flex-nowrap overflow-auto py-3">
 		{% for image in trick.tricksImages %}
@@ -48,8 +46,8 @@
 	</div>
 
 	{{ form_start(form) }}
-	<div class="row mb-4 px-5">
-		<div class="col-12 col-md-10 mx-auto">
+	<div>
+		<div>
 			{{ form_label(form.trickVideos) }}
 			<button type="button" class="add_item_link" data-collection-holder-class="videos">Add media</button>
 			<ul class="videos" data-index="{{ form.trickVideos|length }}" data-prototype="{{ form_widget(form.trickVideos.vars.prototype)|e('html_attr') }}"></ul>
@@ -59,9 +57,9 @@
 			{% do form.trickVideos.setRendered %}
 		</div>
 	</div>
-	<button class="btn btn-primary"style="background-color: cornflowerblue;" >{{ button_label|default('Save') }}</button>
+	<button>{{ button_label|default('Enregistrer') }}</button>
+
 	{{ form_end(form) }}
 
 
 </div>
-

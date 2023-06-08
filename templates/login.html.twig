@@ -16,6 +16,13 @@
             </div>
         {% endfor %}
 
+
+        {% for message in app.flashes('email_reset') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         <form method="post">
           {{ form_start(form) }}
 

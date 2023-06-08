@@ -74,7 +74,7 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}', name: 'app_trick_show', methods: ['GET', 'POST'])]
+    #[Route('/{slug}/{page<\d+>?1}', name: 'app_trick_show', methods: ['GET', 'POST'])]
     public function show(Request $request, Trick $trick, CommentRepository $commentRepository, EntityManagerInterface $entityManager, int $page = 1): Response
     {
         $comment = new Comment();
@@ -162,7 +162,7 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'app_trick_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_trick_delete', methods: ['POST'])]
     public function delete(Request $request, Trick $trick, TrickRepository $trickRepository, UrlGeneratorInterface $urlGenerator, SessionInterface $session): Response
     {
         if ($this->isCsrfTokenValid('delete-trick', $request->request->get('_token'))) {
